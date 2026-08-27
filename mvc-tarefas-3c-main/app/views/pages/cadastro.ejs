@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= tituloAba %></title>
+</head>
+
+<body>
+
+    <%
+        const msgs = { tarefa: "", prazo: "", situacao: "" };
+
+        if (listaErros) {
+            listaErros.errors.forEach((erro) => {
+                if (erro.path === "tarefa")    msgs.tarefa   = erro.msg;
+                if (erro.path === "situacao")  msgs.situacao = erro.msg;
+                if (erro.path === "prazo")     msgs.prazo   += erro.msg;
+            });
+        }
+    %>
+
+    <h1><%= tituloPagina %></h1>
+
+    <form action="/cadastro" method="post">
+
+        <input type="hidden" name="id" value="<%= tarefa.id_tarefa %>">
+
+        <label for="tarefa">Tarefa:</label><br>
+        <textarea name="tarefa" id="tarefa"><%= tarefa.nome_tarefa %></textarea>
+        <span class="erro"><%= msgs.tarefa %></span><br>
+
+        <label for="prazo">Prazo:</label><br>
+        <input type="date" name="prazo" id="prazo"
+            value="<%= moment(tarefa.prazo_tarefa).format('YYYY-MM-DD') %>">
+        <span class="erro"><%= msgs.prazo %></span><br>
+
+        <label for="situacao">Situação:</label><br>
+        <%
+            const opcoes = ["Cancelada", "Pendente", "Iniciada", "Finalizada", "Em Atraso"];
+        %>
+        <select name="situacao" id="situacao">
+            <% opcoes.forEach((desc, idx) => { %>
+                <option value="<%= idx %>" <%= tarefa.situacao_tarefa == idx ? "selected" : "" %>>
+                    <%= desc %>
+                </option>
+            <% }); %>
+        </select>
+        <span class="erro"><%= msgs.situacao %></span><br>
+
+        <button type="submit">Salvar</button>
+        <button type="button" onclick="window.location='/'">Cancelar</button>
+
+    </form>
+
+</body>
+
+</html>

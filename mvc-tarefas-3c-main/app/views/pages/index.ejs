@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+
+<body>
+
+    <h1>Lista de Tarefas - 3C</h1>
+
+    <button onclick="window.location='/cadastro'">Nova Tarefa</button>
+
+    <br><br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Tarefa</th>
+                <th>Prazo</th>
+                <th>Situação</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% 
+            const descricaoSituacao = ["Cancelada", "Pendente", "Iniciada", "Finalizada", "Em Atraso"];
+
+            if (linhasTabela && linhasTabela.length > 0) {
+                linhasTabela.forEach((tarefa) => { 
+            %>
+                <tr>
+                    <td><%= tarefa.id_tarefa %></td>
+                    <td><%= tarefa.nome_tarefa %></td>
+                    <td><%= moment(tarefa.prazo_tarefa).format('L') %></td>
+                    <td><%= descricaoSituacao[tarefa.situacao_tarefa] %></td>
+                    <td>
+                        <a href="/alterar?id=<%= tarefa.id_tarefa %>">Editar</a> |
+                        <a href="/excluir?id=<%= tarefa.id_tarefa %>" onclick="return confirm('Confirma a exclusão?')">Excluir</a>
+                    </td>
+                </tr>
+            <% 
+                });
+            } else { 
+            %>
+                <tr>
+                    <td colspan="5">Nenhuma tarefa encontrada.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <% if (notificador) { %>
+        <nav>
+            <ul>
+                <% for (let i = 1; i <= notificador.totalPaginas; i++) { 
+                    const classe = i == notificador.paginaAtual ? "atual" : "";
+                %>
+                    <li><a class="<%= classe %>" href="?pagina=<%= i %>"><%= i %></a></li>
+                <% } %>
+            </ul>
+        </nav>
+    <% } %>
+
+</body>
+
+</html>

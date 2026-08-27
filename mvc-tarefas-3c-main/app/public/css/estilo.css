@@ -1,0 +1,17 @@
+ul{
+    list-style: none;
+}
+
+ul li{
+    display: inline-block;
+}
+ul li a{
+    background-color: lightgray;
+    display: block;
+    width: 40px;
+    height: 40px;
+}
+
+ul li a.atual{
+    background-color: lightskyblue;
+}
